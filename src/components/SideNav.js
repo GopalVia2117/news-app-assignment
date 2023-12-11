@@ -3,7 +3,7 @@ import { categories } from '@/data/categories';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import ios from "../images/ios.svg";
-import playStore from "../images/playStore.svg";
+import playStore from "../images/playstore.svg";
 import { Facebook, Instagram, Twitter } from '@mui/icons-material';
 
 
