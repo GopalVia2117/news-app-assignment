@@ -7,7 +7,7 @@ import { fetchArticles } from '@/redux-store/articlesReducers';
 import { useSelector } from 'react-redux';
 import Items from '@/components/Items';
 
-const page = () => {
+const Page = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const articles = useSelector(state => state.article.articles);
@@ -24,4 +24,4 @@ const page = () => {
   )
 }
 
-export default page;
+export default Page;
