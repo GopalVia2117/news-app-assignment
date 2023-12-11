@@ -8,14 +8,16 @@ const initialState = {
     error: ''
 }
 
-export const fetchArticles =  createAsyncThunk('articles/fetchArticles', () => {
-    return axios.get("https://newsapi.org/v2/top-headlines?country=in", {
+export const fetchArticles =  createAsyncThunk('articles/fetchArticles', (category) => {
+    let url = "https://newsapi.org/v2/top-headlines?country=in";
+    if(category) url += "&category=" + category;
+    return axios.get(url, {
         headers: {
             "x-api-key": process.env.NEXT_PUBLIC_NEWS_X_API_KEY
         }
     }).then(response => {
-        console.log(response.data); 
-        return response.data;
+        console.log(response.data.articles); 
+        return response.data.articles;
     });
 });
 

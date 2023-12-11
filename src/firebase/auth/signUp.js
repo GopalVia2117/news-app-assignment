@@ -1,10 +1,9 @@
-import firebase_app from "../config";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import app from "../config";
+import { createUserWithEmailAndPassword, getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-const auth = getAuth(firebase_app);
+const auth = getAuth(app);
 
-
-export default async function signUp(email, password) {
+export async function signUpWithEmailPassword(email, password) {
     let result = null,
         error = null;
     try {
@@ -14,4 +13,18 @@ export default async function signUp(email, password) {
     }
 
     return { result, error };
+}
+
+
+export async function signUpWithGoogleAuth(){
+    let result = null, error = null;
+
+    const googleAuthProvider = new GoogleAuthProvider();
+    try{
+        result = await signInWithPopup(auth, googleAuthProvider);
+    }
+    catch(e){
+        error = e;
+    }
+    return {result, error};
 }

@@ -11,13 +11,13 @@ import Items from './Items';
 
 
 const MainArea = () => {
-  
-    const articles = useSelector(state => state.articlesState.articles.articles);
-    const dispatch = useDispatch();
+     const articles = useSelector(state => state.article.articles);
+     const dispatch = useDispatch();
 
     useEffect(() => {
       dispatch(fetchArticles());
-      localStorage.setItem('articles', JSON.stringify(articles));
+      // localStorage.setItem('articles', JSON.stringify(articles));
+      console.log(articles);
     }, []);
 
 
@@ -29,3 +29,4 @@ const MainArea = () => {
 }
 
 export default MainArea;
+

@@ -3,36 +3,38 @@ import {useState, useEffect} from 'react';
 
 import getData from "@/firebase/firestore/getData";
 import Items from '@/components/Items';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setFavorites } from '@/redux-store/favoritesReducer';
 
 function Page(){
-  const [user, setUser] = useState(null);
-  const [articles, setArticles] = useState([]);
-
+  const articles = useSelector(state => state.favorites.favorites);
+  const user = useSelector(state => state.user.user);
+  const dispatch = useDispatch();
+  
   useEffect(() => {
-    console.log("Having errors");
-     const fetchArticles = async () => {
-        try{
-          const data = await getData("favorites");
-          console.log(data);
-          setArticles(data.docs);
+     async function fetchFavorites() {
+      const {result, error} = await getData("favorites");
+      let favorites = [];
+      if(result){
+        result?.forEach(favorite => {
+          if(favorite.data().user === user.uid) 
+          favorites.push(favorite.data());
         }
-        catch(error){
-          console.log(error.message);
-        }
+          );
+      }
+      else{
+        console.log(error);
+      }
+      dispatch(setFavorites(favorites));
      }
-     fetchArticles();
+     fetchFavorites();
   }, []);
 
-  useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem('user')) || null;
-    console.log(localUser);
-    setUser(localUser);
-  }, []);
-
+ 
   return (
     <div>
-       {!user && <h2>Please Login to get favorite articles</h2>}
+       <h2 className='text-gray-400 text-lg lg:text-2xl'>Favorites</h2>
+       {!user && <h2 className='mt-10 text-xl text-gray-800'>Please Login to get favorite articles</h2>}
        {user && <Items articles={articles} /> }
     </div>
   )

@@ -1,35 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link';
 
-import { FavoriteBorder } from '@mui/icons-material';
+import { Favorite } from '@mui/icons-material';
 
 import { countryNames } from '@/data/countries';
+import { useSelector, useDispatch } from 'react-redux';
+import { logOutUser } from '@/redux-store/userReducer';
 
 const Navbar = () => {
-  const [user, setUser] = useState(null);
-
-  const logOut = () => {
-    localStorage.removeItem('user');
-    location.reload();
-  }
-
-  useEffect(() => {
-    const localUser = JSON.parse(localStorage.getItem('user')) || null;
-    setUser(localUser);
-  }, []);
-
+   const user = useSelector(state => state.user.user);
+   const dispatch = useDispatch();
+  
   return (
-    <header className='px-10 py-5 flex justify-between items-center'>
+    <header className='px-10 py-5 flex justify-between items-center sticky top-0 z-10 bg-white'>
         <div>
-           <Link href="/"><h1 className='text-2xl font-medium text-orange-400'>NewsApp</h1></Link>
+           <Link href="/"><h1 className='text-2xl font-medium text-blue-700 hover:text-blue-600'>NewsMania</h1></Link>
         </div>
         <div className='flex items-center gap-4'>
             {!user ? 
-            <button className='px-4 py-2 bg-orange-400 text-white rounded-md'><Link href="/auth/login" className="font-medium">Login</Link></button>
+            <button className='px-4 py-2 bg-blue-700 hover:bg-blue-600 text-white rounded-md'><Link href="/auth/login" className="font-medium">Login</Link></button>
             : <div className='flex items-center gap-2'>
-            <Link href="#"><FavoriteBorder/></Link>
+            <Link title='Favorite Articles' href="/favorites"><Favorite/></Link>
             <p className='font-medium hidden sm:block'>{user.email}</p>
-            <button onClick={logOut} className='px-4 py-2 bg-orange-400 text-white rounded-md'>Log out</button>
+            <button onClick={() => dispatch(logOutUser())} className='px-4 py-2 bg-blue-700 text-white rounded-md'>Log out</button>
             </div>}
             </div>
     </header>

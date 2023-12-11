@@ -4,10 +4,11 @@ import signIn from "@/firebase/auth/signIn";
 import { useRouter } from 'next/navigation'
 import Link from "next/link";
 import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "@/redux-store/userReducer";
 
 
 function Page() {
-    const user = useSelector(state => state.userState);
+    const user = useSelector(state => state.user);
     const dispatch = useDispatch();
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -23,9 +24,8 @@ function Page() {
         }
 
         // else successful
-        console.log(result);
-        // dispatch(setUser(result.user.user));
-        localStorage.setItem('user', JSON.stringify(result.user));
+        dispatch(setUser({uid: result.user.uid, email: result.user.email, accessToken: result.user.accessToken}));
+        // console.log(result.user);
         return router.push("/");
     }
 
@@ -64,14 +64,12 @@ function Page() {
                 <input onChange={(e) => setPassword(e.target.value)} className="shadow appearance-none rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline" id="password" type="password" placeholder="******************"/>
             </div>
             <div className="flex items-center justify-between">
-                <button className="bg-orange-400 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                <button className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                     Login
                 </button>
             </div>
-            <p className="mt-2 text-sm">Don't have an account? <Link href="/auth/signup" className="text-blue-700">Sign Up</Link></p>
-            <div>
-                {JSON.stringify(user.userState)}
-            </div>
+            <p className="mt-2 text-sm">Do not have an account? <Link href="/auth/signup" className="text-blue-700">Sign Up</Link> </p>
+           
         </form>
     </div>
     

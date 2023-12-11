@@ -18,7 +18,6 @@ const Detail = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(params.id);
     dispatch(fetchArticles());
     setDispatched(true);
   }, []);
